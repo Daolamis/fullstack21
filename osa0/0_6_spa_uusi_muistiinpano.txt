@@ -1,0 +1,9 @@
+note over selain:
+Käyttäjä klikkaa Save-nappia, jolloin
+Uusi muistiinpano lisätään selaimen sisältämään notes -listaan
+päivitetty notes renderöidään ja vasta sitten data lähetetään palvelimelle
+end note
+
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+palvelin-->selain: HTTP 201 {"message":"note created"}
+
