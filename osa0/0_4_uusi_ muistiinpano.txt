@@ -1,0 +1,33 @@
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+palvelin-->selain: tyhjä vastaus HTTP 302 redirect
+
+note over selain:
+selain ohjataan /exampleapp/notes osoitteeseen
+end note
+
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+palvelin-->selain: HTML-koodia
+
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+palvelin-->selain: main.css
+
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+palvelin-->selain: main.js
+
+note over selain:
+main.js javascript koodi suoritetaan, jolloin selain tekee GET pyynnön palvelimelle
+end note
+
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+palvelin-->selain: data.json
+
+note over selain:
+data.json sisältämä data renderöidään html:ään
+end note
+
+selain->palvelin: https://studies.cs.helsinki.fi/favicon.ico
+palvelin-->selain: Html-koodia
+
+note over selain:
+selain yritti itsenäisesti hakea favicon ikonia
+end note
