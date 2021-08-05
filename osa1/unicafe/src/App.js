@@ -17,10 +17,14 @@ const App = () => {
 }
 
 const Statistics = ({ good, neutral, bad }) => {
+  if (!good && !neutral && !bad) {
+    return <div><h2>statistics</h2>No feedback given</div>
+  }
+
   const all = good + neutral + bad;
   const value = good - bad;
   const avarage = value / all || 0;
-  const positive = good/all * 100 || 0;
+  const positive = good / all * 100 || 0;
   return <div>
     <h2>statistics</h2>
     good {good} <br />
