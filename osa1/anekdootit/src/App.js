@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+const NO_VOTES = -1;
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -13,13 +15,19 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [points, setPoints] = useState(new Array(anecdotes.length).fill(0));
+  const [mostVotedIndex, setMostVotedIndex] = useState(NO_VOTES);
 
   const vote = () => {
     const copy = [...points];
     copy[selected] += 1;
     setPoints(copy);
+    
+    // using copy because points in state is not updated at this moment
+    const [indexOfVote, votePoints] = copy.reduce((current, next, index) =>
+      (current[1] > next ? current : [index, next]), [0, 0]);
+    setMostVotedIndex(votePoints > 0 ? indexOfVote : NO_VOTES);
   }
-  
+
   return (
     <div>
       {anecdotes[selected]} <br />
@@ -28,6 +36,8 @@ const App = () => {
         <button onClick={() => vote()}>vote</button>
         <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>next anecdote</button>
       </div>
+      <h4>Anecdote with most votes</h4>
+      {mostVotedIndex !== NO_VOTES ? anecdotes[mostVotedIndex] : 'No votes'}
     </div>
   )
 }
