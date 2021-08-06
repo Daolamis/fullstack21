@@ -40,26 +40,44 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={filter} onChange={handleFilter} />
-      </div>
-      <form onSubmit={handleSubmit}>
-        <h3>Add a new</h3>
-        <div>
-          name: <input value={newName} onChange={handleNewName} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNewNumber} />
-        </div>
-        <div>
-          <button>add</button>
-        </div>
-      </form>
+      <FilterForm filter={filter} handleFilter={handleFilter} />
+      <PersonForm newName={newName}
+        handleNewName={handleNewName}
+        newNumber={newNumber}
+        handleNewNumber={handleNewNumber}
+        handleSubmit={handleSubmit}
+      />
       <h2>Numbers</h2>
-      {filterPersons().map(p => <div key={p.name}>{p.name} {p.number}</div>)}
+      <Persons persons={filterPersons()} />
     </div>
   )
 
 }
+
+const PersonForm = ({ newName, handleNewName, newNumber, handleNewNumber, handleSubmit }) => (
+  <form onSubmit={handleSubmit}>
+    <h3>Add a new</h3>
+    <div>
+      name: <input value={newName} onChange={handleNewName} />
+    </div>
+    <div>
+      number: <input value={newNumber} onChange={handleNewNumber} />
+    </div>
+    <div>
+      <button>add</button>
+    </div>
+  </form>
+)
+
+const FilterForm = ({ filter, handleFilter }) => (
+  <div>
+    filter shown with <input value={filter} onChange={handleFilter} />
+  </div>
+)
+
+const Persons = ({ persons }) => (
+  persons.map(p => <Person key={p.name} name={p.name} number={p.number} />)
+)
+const Person = ({ name, number }) => <div>{name} {number}</div>
 
 export default App;
