@@ -24,16 +24,28 @@ function App() {
 }
 
 const Countries = ({ countries, filter }) => {
+  const [showCountry, setShowCountry] = useState('');
+
   const filteredCountries = countries.filter(c => c.name.toUpperCase().indexOf(filter.toUpperCase()) !== -1);
   if (filteredCountries.length > 10) {
-    return <div>There were too many matchings countrues, make more specific filter</div>
+    return <div>There were too many matchings countries, make more specific filter</div>
   }
 
   if (filteredCountries.length === 1) {
     return <Country country={filteredCountries[0]} />
   }
 
-  return filteredCountries.map((c) => <div key={c.alpha2Cod}>{c.name}</div>)
+  return (
+    <div>
+      {filteredCountries.map(c =>
+        <div key={c.alpha2Code}>
+          {c.name}
+          <button onClick={() => setShowCountry(c.alpha2Code)}>show</button>
+        </div>
+      )}
+
+      {showCountry && <Country country={countries.find(c => c.alpha2Code === showCountry)} />}
+    </div>)
 }
 
 const Country = ({ country }) => {
@@ -44,9 +56,9 @@ const Country = ({ country }) => {
       <div>Population: {country.population}</div>
       <h4>Languages</h4>
       <ul>
-        {country.languages.map(c => <li>{c.name}</li>)}
+        {country.languages.map(l => <li key={l.iso639_1}>{l.name}</li>)}
       </ul>
-      <img width='200' src={country.flag} />
+      <img width='200' src={country.flag} alt='flag' />
     </div>
   )
 }
