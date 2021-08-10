@@ -29,6 +29,14 @@ const App = () => {
     }
   };
 
+  const handleDelete = (person) => {
+    if (window.confirm(`Delete ${person.name}`)) {
+      personService.remove(person.id).then(d => {
+        setPersons(persons.filter(p => p.id !== person.id));
+      });
+    }
+  }
+
   const handleNewName = (e) => {
     setNewName(e.target.value);
   };
@@ -56,7 +64,7 @@ const App = () => {
         handleSubmit={handleSubmit}
       />
       <h2>Numbers</h2>
-      <Persons persons={filterPersons()} />
+      <Persons persons={filterPersons()} handleDelete={handleDelete} />
     </div>
   )
 }
@@ -82,9 +90,14 @@ const FilterForm = ({ filter, handleFilter }) => (
   </div>
 )
 
-const Persons = ({ persons }) => (
-  persons.map(p => <Person key={p.name} name={p.name} number={p.number} />)
+const Persons = ({ persons, handleDelete }) => (
+  persons.map(p => <Person key={p.name} person={p} handleDelete={() => handleDelete(p)} />)
 )
-const Person = ({ name, number }) => <div>{name} {number}</div>
+const Person = ({ person, handleDelete }) => (
+  <div>
+    {person.name} {person.number}
+    <button onClick={handleDelete}>delete</button>
+  </div>
+)
 
 export default App;
