@@ -1,0 +1,17 @@
+.error {
+    padding: 10px;
+    margin-bottom: 10px;
+    color: red;
+    background-color: pink;
+    border:2px solid red;
+    font-size: 20px;
+}
+
+.info {
+    padding: 10px;
+    margin-bottom: 10px;
+    color: green;
+    background-color: lightgreen;
+    border: 2px solid green;
+    font-size: 20px;
+}
