@@ -40,7 +40,10 @@ const App = () => {
           setNewName('');
           setNewNumber('');
           showNotification(`Added ${createdPerson.name}`, false);
-        });
+        })
+        .catch(error => (
+          showNotification(error.response.data.error, true)
+        ));
     }
   };
 
