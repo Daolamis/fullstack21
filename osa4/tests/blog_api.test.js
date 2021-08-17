@@ -39,9 +39,17 @@ describe('blog api', () => {
 
     const response2 = await api.get('/api/blogs');
     expect(response2.body).toHaveLength(testBlogs.length + 1);
+    expect(response.body.likes).toBe(2);
 
     const titles = response2.body.map(b => b.title);
     expect(titles).toContain(response.body.title);
+  });
+
+  test('blog without likes saves 0 like', async () => {
+    const newBlog = { author: 'Li Hopper', title: 'What ever', url:'http://hs.fi' };
+    const response = await api.post('/api/blogs').send(newBlog);
+
+    expect(response.body.likes).toBe(0);
   });
 
 
