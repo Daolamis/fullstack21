@@ -33,6 +33,17 @@ describe('blog api', () => {
     expect(response.body[0].id).toBeDefined();
   });
 
+  test('a valid blog can be added', async () => {
+    const newBlog = { author: 'Li Hopper', tittle: 'What ever', likes: 2 };
+    const response = await api.post('/api/blogs').send(newBlog).expect(201);
+
+    const response2 = await api.get('/api/blogs');
+    expect(response2.body).toHaveLength(testBlogs.length + 1);
+
+    const titles = response2.body.map(b => b.title);
+    expect(titles).toContain(response.body.title);
+  });
+
 
   afterAll(() => {
     mongoose.connection.close();
