@@ -34,7 +34,7 @@ describe('blog api', () => {
   });
 
   test('a valid blog can be added', async () => {
-    const newBlog = { author: 'Li Hopper', tittle: 'What ever', likes: 2 };
+    const newBlog = { author: 'Li Hopper', title: 'What ever', url: 'http://hs.fi', likes: 2 };
     const response = await api.post('/api/blogs').send(newBlog).expect(201);
 
     const response2 = await api.get('/api/blogs');
@@ -46,10 +46,20 @@ describe('blog api', () => {
   });
 
   test('blog without likes saves 0 like', async () => {
-    const newBlog = { author: 'Li Hopper', title: 'What ever', url:'http://hs.fi' };
+    const newBlog = { author: 'Li Hopper', title: 'What ever', url: 'http://hs.fi' };
     const response = await api.post('/api/blogs').send(newBlog);
 
     expect(response.body.likes).toBe(0);
+  });
+
+  test('blog without title is responded HTTP 400', async () => {
+    const newBlog = { author: 'Li Hopper', url: 'http://hs.fi' };
+    await api.post('/api/blogs').send(newBlog).expect(400);
+  });
+
+  test('blog without url is responded HTTP 400', async () => {
+    const newBlog = { author: 'Li Hopper', title: 'What ever' };
+    await api.post('/api/blogs').send(newBlog).expect(400);
   });
 
 

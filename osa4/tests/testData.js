@@ -18,6 +18,7 @@ const testBlogs = [
     id: '5a422aa71b54a676234d17f8',
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
+    url: 'https://fi.wikipedia.org/wiki/Edsger_Dijkstra',
     likes: 5,
   },
   {
