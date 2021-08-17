@@ -36,9 +36,29 @@ const mostBlogs = (blogs) => {
   return mostBlogs;
 };
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return null;
+  }
+
+  // count likes from every author
+  const summary = blogs.reduce((result, blog) => {
+    const likes = result[blog.author] || 0;
+    return { ...result, [blog.author]: likes + blog.likes };
+  }, {});
+
+  //find author of most likes
+  const mostLikes = Object.entries(summary).reduce((result, next) => {
+    const [author, likes] = next;
+    return result.likes > likes ? result : { author, likes };
+  }, { author: 'tmp', likes: -1 });
+  return mostLikes;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 };
