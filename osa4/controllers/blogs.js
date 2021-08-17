@@ -12,4 +12,13 @@ router.post('', async (request, response) => {
   response.status(201).json(result);
 });
 
+router.delete('/:id', async (request, response) => {
+  const result = await Blog.findByIdAndRemove(request.params.id);
+  if (result) {
+    response.status(204).end();
+  } else {
+    response.status(404).end();
+  }
+});
+
 module.exports = router;

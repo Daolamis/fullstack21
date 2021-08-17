@@ -12,9 +12,9 @@ describe('blog api', () => {
 
   beforeEach(async () => {
     await Blog.deleteMany({});
-    console.log('cleared DB');
+    //console.log('cleared DB');
     await Blog.insertMany(testBlogs);
-    console.log('inserted test data to db');
+    //console.log('inserted test data to db');
   });
 
   test('blogs are returned as JSON', async () => {
@@ -45,7 +45,7 @@ describe('blog api', () => {
     expect(titles).toContain(response.body.title);
   });
 
-  test('blog without likes saves 0 like', async () => {
+  test('blog without likes saved with 0 like', async () => {
     const newBlog = { author: 'Li Hopper', title: 'What ever', url: 'http://hs.fi' };
     const response = await api.post('/api/blogs').send(newBlog);
 
@@ -60,6 +60,18 @@ describe('blog api', () => {
   test('blog without url is responded HTTP 400', async () => {
     const newBlog = { author: 'Li Hopper', title: 'What ever' };
     await api.post('/api/blogs').send(newBlog).expect(400);
+  });
+
+  test('blog is removed by id', async () => {
+    const { body: blogsBefore } = await api.get('/api/blogs');
+    const toBeRemoved = blogsBefore[0];
+
+    await api.delete(`/api/blogs/${toBeRemoved.id}`).expect(204);
+
+    const { body: blogsAfter } = await api.get('/api/blogs');
+    const ids = blogsAfter.map(b => b.id);
+    expect(blogsAfter).toHaveLength(blogsBefore.length - 1);
+    expect(ids).not.toContain(toBeRemoved.id);
   });
 
 
