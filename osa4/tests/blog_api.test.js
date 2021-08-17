@@ -8,7 +8,7 @@ const { testBlogs } = require('./testData');
 const api = supertest(app);
 
 
-describe('blog api test', () => {
+describe('blog api', () => {
 
   beforeEach(async () => {
     await Blog.deleteMany({});
@@ -26,6 +26,11 @@ describe('blog api test', () => {
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs');
     expect(response.body).toHaveLength(testBlogs.length);
+  });
+
+  test('blog has id field', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body[0].id).toBeDefined();
   });
 
 
