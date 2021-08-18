@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/blogs/611bb3c129930f2623444932
+Content-Type: application/json
+
+{
+  "author": "George Hamilton",
+  "title": "Assembler for Dummies"
+}

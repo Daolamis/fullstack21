@@ -12,6 +12,16 @@ router.post('', async (request, response) => {
   response.status(201).json(result);
 });
 
+router.put('/:id', async (request, response) => {
+  const { body, params: { id } } = request;
+  const result = await Blog.findByIdAndUpdate(id, body, { new: true });
+  if (result) {
+    response.json(result);
+  } else {
+    response.status(404).end();
+  }
+});
+
 router.delete('/:id', async (request, response) => {
   const result = await Blog.findByIdAndRemove(request.params.id);
   if (result) {
