@@ -9,7 +9,11 @@ router.get('', async (req, res) => {
 
 router.post('', async (req, res) => {
   const { body: newUser } = req;
-  console.log('newUser', newUser);
+  if(!newUser.password || newUser.password.length < 3){
+    const err = new Error('Password is too short! Minimum length of password is 3 characters.');
+    err.name = 'ValidationError';
+    throw err;
+  }
   const saltRounds = 10;
   const hash = await bcrypt.hash(newUser.password, saltRounds);
   const user = new User({ ...newUser, password: hash });

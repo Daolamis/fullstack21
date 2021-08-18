@@ -1,3 +1,9 @@
+const testUser = {
+  username: 'root',
+  name: 'Jesper Kvik',
+  password: 'god1234'
+};
+
 const testBlog = {
   id: '5a422b891b54a676234d17fa',
   title: 'First class tests',
@@ -51,4 +57,4 @@ const testBlogs = [
   }
 ];
 
-module.exports = { testBlog, testBlogs };
+module.exports = { testBlog, testBlogs, testUser };
