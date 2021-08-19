@@ -16,7 +16,7 @@ router.post('', async (req, res) => {
   }
   const saltRounds = 10;
   const hash = await bcrypt.hash(newUser.password, saltRounds);
-  const user = new User({ ...newUser, password: hash });
+  const user = new User({ ...newUser, passwordHash: hash });
   const ret = await user.save();
   res.status(201).json(ret);
 });
