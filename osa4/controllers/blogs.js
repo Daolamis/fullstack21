@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
@@ -8,7 +9,12 @@ router.get('', async (request, response) => {
 });
 
 router.post('', async (request, response) => {
-  const [user] = await User.find({}); //first found user
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!decodedToken.username) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+
+  const user = await User.findOne({ username: decodedToken.username }); //first found user
   const blog = new Blog({ ...request.body, user: user._id });
   const savedBlog = await blog.save();
   user.blogs = [...user.blogs, savedBlog._id];
