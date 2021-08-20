@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Blogs from './components/Blogs';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -10,6 +11,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null); //{message, isError}
+  const toggleRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -52,8 +54,8 @@ const App = () => {
       const newBlog = await blogService.create(blog);
       setBlogs([...blogs, newBlog]);
       showNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`);
+      toggleRef.current.toggleVisibility();
     } catch (e) {
-      debugger
       showNotification(e.response.data.error, true);
     }
   };
@@ -65,9 +67,11 @@ const App = () => {
         <LoginForm handleLogin={handleLogin} />
         :
         <div >
-          <BlogForm handleSave={handleBlogSave} />
           <h2>blogs</h2>
           <p>{`${user.name} logged in`} <button onClick={handleLogout}>logout</button></p>
+          <Togglable visibleLabel='cancel' hideLabel='create new blog' ref={toggleRef}>
+            <BlogForm handleSave={handleBlogSave} />
+          </Togglable>
           <Blogs blogs={blogs} />
         </div>
       }
