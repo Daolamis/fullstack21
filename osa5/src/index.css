@@ -16,3 +16,12 @@
   border: 2px solid red;
   background-color: pink;
 }
+
+.blog {
+  color:#212;
+  padding-left: 8px;
+  margin: 2px 0px;
+  border: 1px solid #999;
+  background-color: #eff;
+
+}
