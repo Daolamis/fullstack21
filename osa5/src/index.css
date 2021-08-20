@@ -1,0 +1,18 @@
+
+.info {
+  font-size: 18px;
+  color: darkgreen;
+  margin: 5px;
+  padding: 5px;
+  border: 2px solid green;
+  background-color: lightgreen;
+}
+
+.error {
+  font-size: 18px;
+  color: darkred;
+  margin: 5px;
+  padding: 5px;
+  border: 2px solid red;
+  background-color: pink;
+}
