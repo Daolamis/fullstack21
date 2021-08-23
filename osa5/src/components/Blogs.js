@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types';
 
 const Blogs = ({ blogs, handleLikeClick, handleDelete, username }) => (
   blogs.map(blog =>
@@ -9,6 +10,21 @@ const Blogs = ({ blogs, handleLikeClick, handleDelete, username }) => (
       username={username} />
   )
 )
+
+Blogs.propTypes = {
+  blogs: PropTypes.arrayOf(PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    })
+  })),
+  handleLikeClick: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired
+}
+
 const Blog = ({ blog, handleLikeClick, handleDelete, username }) => {
   const [view, setView] = useState(false);
   const toggleView = () => setView(!view);
@@ -27,5 +43,17 @@ const Blog = ({ blog, handleLikeClick, handleDelete, username }) => {
     </div>
   )
 }
-
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    })
+  }),
+  handleLikeClick: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired
+}
 export default Blogs
