@@ -60,6 +60,16 @@ const App = () => {
     }
   };
 
+  const handleLikeClick = async (likes, blogId) => {
+    try {
+      const updatedBlog = await blogService.addLikes(likes, blogId);
+      setBlogs(blogs.map(b => b.id !== blogId ? b : { ...b, likes: updatedBlog.likes }));
+      showNotification(`Liked ${updatedBlog.title}, it has now ${updatedBlog.likes} likes`);
+    } catch (e) {
+      showNotification(e.response.data.error, true);
+    }
+  }
+
   return (
     <div>
       <Notification notification={notification} />
@@ -72,7 +82,7 @@ const App = () => {
           <Togglable visibleLabel='cancel' hideLabel='create new blog' ref={toggleRef}>
             <BlogForm handleSave={handleBlogSave} />
           </Togglable>
-          <Blogs blogs={blogs} />
+          <Blogs blogs={blogs} handleLikeClick={handleLikeClick} />
         </div>
       }
     </div >

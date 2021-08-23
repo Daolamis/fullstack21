@@ -11,10 +11,17 @@ const getAll = async () => {
 }
 
 const create = async (blog) => {
-  const config = {    headers: { Authorization: token },  }
+  const config = { headers: { Authorization: token }, }
   const response = await axios.post(baseUrl, blog, config);
   return response.data;
 
 }
 
-export default { getAll, create, setToken };
+const addLikes = async (likes, blogId) => {
+  // we don't need to send whole blog when updating just likes.
+  // MongoDB updates onyy existing properties
+  const response = await axios.put(`${baseUrl}/${blogId}`, { likes });
+  return (await response).data
+}
+
+export default { getAll, create, setToken, addLikes };
