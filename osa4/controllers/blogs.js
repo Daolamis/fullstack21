@@ -15,7 +15,8 @@ router.post('', async (request, response) => {
 
   const dbUser = await User.findOne({ username: user.username });
   const blog = new Blog({ ...request.body, user: dbUser._id });
-  const savedBlog = await blog.save();
+  let savedBlog = await blog.save();
+  savedBlog = await savedBlog.populate('user', { username: 1, name: 1 }).execPopulate();
   dbUser.blogs = [...dbUser.blogs, savedBlog._id];
   await dbUser.save();
   response.status(201).json(savedBlog);
