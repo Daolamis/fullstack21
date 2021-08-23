@@ -8,9 +8,9 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const [blogs, _setBlogs] = useState([])
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null); //{message, isError}
+  const [notification, setNotification] = useState(null); //{message:string, isError:boolean}
   const toggleRef = useRef();
 
   useEffect(() => {
@@ -27,6 +27,12 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
+
+  const setBlogs = blogs => {
+    const newArray = [...blogs];
+    newArray.sort((elem1, elem2) => elem2.likes - elem1.likes);
+    _setBlogs(newArray);
+  }
 
   const showNotification = (message, isError) => {
     setNotification({ message, isError });
