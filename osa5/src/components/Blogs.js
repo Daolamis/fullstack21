@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 
-const Blogs = ({ blogs, handleLikeClick }) => (
+const Blogs = ({ blogs, handleLikeClick, handleDelete, username }) => (
   blogs.map(blog =>
-    <Blog key={blog.id} blog={blog} handleLikeClick={handleLikeClick} />
+    <Blog key={blog.id}
+      blog={blog}
+      handleLikeClick={handleLikeClick}
+      handleDelete={handleDelete}
+      username={username} />
   )
 )
-const Blog = ({ blog, handleLikeClick }) => {
+const Blog = ({ blog, handleLikeClick, handleDelete, username }) => {
   const [view, setView] = useState(false);
   const toggleView = () => setView(!view);
 
@@ -17,6 +21,8 @@ const Blog = ({ blog, handleLikeClick }) => {
         <div>{blog.url}</div>
         <div>{blog.likes} <button onClick={() => handleLikeClick(blog.likes + 1, blog.id)}>like</button></div>
         <div>{blog.user.name}</div>
+        {username === blog.user.username &&
+          <div><button className='delete_button' onClick={() => handleDelete(blog)}>Remove</button></div>}
       </div>
     </div>
   )

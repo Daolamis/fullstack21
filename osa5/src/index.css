@@ -30,5 +30,15 @@
   margin: 2px 0px;
   border: 1px solid #999;
   background-color: #eff;
+}
 
+.delete_button {
+  padding: 2px 5px;
+  margin-bottom: 5px;
+  background-image: linear-gradient( rgb(64, 64, 255), rgb(46, 46, 138));
+  background-color:blue;
+  color:white;
+  text-decoration: none;
+  border: none;
+  border-radius: 3px;
 }

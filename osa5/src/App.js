@@ -76,6 +76,20 @@ const App = () => {
     }
   }
 
+  const handleDelete = async (blog) => {
+    if (!window.confirm(`Remove blog ${blog.title} by ${blog.author} `)) {
+      return;
+    }
+    try {
+      await blogService.remove(blog.id);
+      const filtered = blogs.filter(b => b.id !== blog.id);
+      setBlogs(filtered);
+      showNotification(`Blog ${blog.title} is removed`);
+    } catch (e) {
+      showNotification(e.response.data.error, true);
+    }
+  }
+
   return (
     <div>
       <Notification notification={notification} />
@@ -88,7 +102,10 @@ const App = () => {
           <Togglable visibleLabel='cancel' hideLabel='create new blog' ref={toggleRef}>
             <BlogForm handleSave={handleBlogSave} />
           </Togglable>
-          <Blogs blogs={blogs} handleLikeClick={handleLikeClick} />
+          <Blogs blogs={blogs}
+            handleLikeClick={handleLikeClick}
+            handleDelete={handleDelete}
+            username={user.username} /> {/* my backend doesn't return userid, so username is used instead to delete blog*/}
         </div>
       }
     </div >
