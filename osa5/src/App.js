@@ -8,7 +8,7 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
-  const [blogs, _setBlogs] = useState([])
+  const [blogs, _setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null); //{message:string, isError:boolean}
   const toggleRef = useRef();
@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )
+    );
   }, []);
 
   useEffect(() => {
@@ -32,12 +32,12 @@ const App = () => {
     const newArray = [...blogs];
     newArray.sort((elem1, elem2) => elem2.likes - elem1.likes);
     _setBlogs(newArray);
-  }
+  };
 
   const showNotification = (message, isError) => {
     setNotification({ message, isError });
     setTimeout(() => setNotification(null), 4000);
-  }
+  };
 
   const handleLogin = async (loginData) => {
     try {
@@ -74,7 +74,7 @@ const App = () => {
     } catch (e) {
       showNotification(e.response.data.error, true);
     }
-  }
+  };
 
   const handleDelete = async (blog) => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author} `)) {
@@ -88,7 +88,7 @@ const App = () => {
     } catch (e) {
       showNotification(e.response.data.error, true);
     }
-  }
+  };
 
   return (
     <div>
@@ -110,6 +110,6 @@ const App = () => {
       }
     </div >
   );
-}
+};
 
 export default App;

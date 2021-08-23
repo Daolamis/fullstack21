@@ -1,7 +1,7 @@
-import { useState } from "react";
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const BlogForm = ({handleSave}) => {
+const BlogForm = ({ handleSave }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -12,7 +12,7 @@ const BlogForm = ({handleSave}) => {
     setTitle('');
     setAuthor('');
     setUrl('');
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -22,11 +22,11 @@ const BlogForm = ({handleSave}) => {
       <div>Url <input type='text' value={url} onChange={e => setUrl(e.target.value)} /></div>
       <button type='submit'>Create</button>
     </form>
-  )
+  );
 };
 
 BlogForm.propTypes = {
   handleSave: PropTypes.func.isRequired
-}
+};
 
 export default BlogForm;

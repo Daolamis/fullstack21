@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Blogs = ({ blogs, handleLikeClick, handleDelete, username }) => (
@@ -9,7 +9,7 @@ const Blogs = ({ blogs, handleLikeClick, handleDelete, username }) => (
       handleDelete={handleDelete}
       username={username} />
   )
-)
+);
 
 Blogs.propTypes = {
   blogs: PropTypes.arrayOf(PropTypes.shape({
@@ -23,13 +23,13 @@ Blogs.propTypes = {
   handleLikeClick: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired
-}
+};
 
 const Blog = ({ blog, handleLikeClick, handleDelete, username }) => {
   const [view, setView] = useState(false);
   const toggleView = () => setView(!view);
 
-  const buttonLabel = view ? 'hide' : 'view'
+  const buttonLabel = view ? 'hide' : 'view';
   return (
     <div className='blog'>
       {blog.title} {blog.author} <button onClick={toggleView}>{buttonLabel}</button>
@@ -41,8 +41,8 @@ const Blog = ({ blog, handleLikeClick, handleDelete, username }) => {
           <div><button className='delete_button' onClick={() => handleDelete(blog)}>Remove</button></div>}
       </div>
     </div>
-  )
-}
+  );
+};
 Blog.propTypes = {
   blog: PropTypes.shape({
     url: PropTypes.string.isRequired,
@@ -55,5 +55,5 @@ Blog.propTypes = {
   handleLikeClick: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired
-}
-export default Blogs
+};
+export default Blogs;
