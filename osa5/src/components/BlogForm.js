@@ -17,9 +17,9 @@ const BlogForm = ({ handleSave }) => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Create a new blog</h2>
-      <div>Title <input type='text' value={title} onChange={e => setTitle(e.target.value)} /></div>
-      <div>Author <input type='text' value={author} onChange={e => setAuthor(e.target.value)} /></div>
-      <div>Url <input type='text' value={url} onChange={e => setUrl(e.target.value)} /></div>
+      <div>Title <input data-testid='title' type='text' value={title} onChange={e => setTitle(e.target.value)} /></div>
+      <div>Author <input data-testid='author' type='text' value={author} onChange={e => setAuthor(e.target.value)} /></div>
+      <div>Url <input data-testid='url' type='text' value={url} onChange={e => setUrl(e.target.value)} /></div>
       <button type='submit'>Create</button>
     </form>
   );
