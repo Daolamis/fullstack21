@@ -105,7 +105,7 @@ const App = () => {
           <Blogs blogs={blogs}
             handleLikeClick={handleLikeClick}
             handleDelete={handleDelete}
-            username={user.username} /> {/* my backend doesn't return userid, so username is used instead to delete blog*/}
+            loggedUsername={user.username} /> {/* my backend doesn't return userid, so username is used instead to delete blog*/}
         </div>
       }
     </div >
