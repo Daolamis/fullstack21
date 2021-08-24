@@ -19,9 +19,9 @@ describe('Blog app', function () {
 
   describe('Login', function () {
     it('succeeds with correct credentials', function () {
-      cy.get('[data-cy=username]').type('root');
-      cy.get('[data-cy=password]').type('password');
-      cy.get('[data-cy=submit]').click();
+      cy.get('[data-testid=username]').type('root');
+      cy.get('[data-testid=password]').type('password');
+      cy.get('[data-testid=submit]').click();
 
       cy.contains('J. McMAchine logged in');
       cy.contains('logout');
@@ -29,9 +29,9 @@ describe('Blog app', function () {
     });
 
     it('fails with wrong credentials', function () {
-      cy.get('[data-cy=username]').type('root');
-      cy.get('[data-cy=password]').type('blö');
-      cy.get('[data-cy=submit]').click();
+      cy.get('[data-testid=username]').type('root');
+      cy.get('[data-testid=password]').type('blö');
+      cy.get('[data-testid=submit]').click();
 
       cy.get('.error').should('contain', 'wrong username or password');
       cy.get('.error').should('have.css', 'color', 'rgb(139, 0, 0)');

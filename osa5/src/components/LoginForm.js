@@ -16,9 +16,9 @@ const LoginForm = ({ handleLogin }) => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>Username: <input data-cy='username' type='text' value={username} onChange={e => setUsername(e.target.value)} /></div>
-        <div>Password: <input data-cy='password' type='password' value={password} onChange={e => setPassword(e.target.value)} /></div>
-        <div><button data-cy='submit' type='submit'>login</button></div>
+        <div>Username: <input data-testid='username' type='text' value={username} onChange={e => setUsername(e.target.value)} /></div>
+        <div>Password: <input data-testid='password' type='password' value={password} onChange={e => setPassword(e.target.value)} /></div>
+        <div><button data-testid='submit' type='submit'>login</button></div>
       </form>
     </div>
   );
