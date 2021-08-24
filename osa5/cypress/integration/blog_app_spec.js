@@ -38,4 +38,26 @@ describe('Blog app', function () {
       cy.get('.error').should('have.css', 'background-color', 'rgb(255, 192, 203)');
     });
   });
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.request('POST', 'http://localhost:3003/api/login', { username: 'root', password: 'password' })
+        .then(response => {
+          localStorage.setItem('user', JSON.stringify(response.body));
+        });
+      cy.visit('http://localhost:3000');
+    });
+
+    it('A blog can be created', function () {
+      cy.contains('create new blog').click();
+      cy.contains('Create a new blog');
+
+      cy.get('[data-testid=title]').type('Wonders of cypress');
+      cy.get('[data-testid=author]').type('Jo Hopper');
+      cy.get('[data-testid=url]').type('https://docs.cypress.io');
+      cy.get('[data-testid=submit').click();
+
+      cy.contains('Wonders of cypress Jo Hopper');
+      cy.contains('view');
+    });
+  });
 });
