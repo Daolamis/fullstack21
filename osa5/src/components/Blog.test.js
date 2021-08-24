@@ -44,4 +44,11 @@ describe('<Blog>', () => {
     expect(div).toHaveTextContent(blog.url);
     expect(div).toHaveTextContent(blog.likes);
   });
+
+  test('like button click fires a event', () => {
+    const button = component.getByText('like');
+    fireEvent.click(button);
+    fireEvent.click(button);
+    expect(handleLikeClick.mock.calls).toHaveLength(2);
+  });
 });
