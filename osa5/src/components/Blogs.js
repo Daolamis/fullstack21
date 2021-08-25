@@ -36,7 +36,7 @@ const Blog = ({ blog, handleLikeClick, handleDelete, loggedUsername }) => {
       {blog.title} {blog.author} <button onClick={toggleView}>{buttonLabel}</button>
       <div className='more_blog_data' style={{ display: view ? 'block' : 'none' }} >
         <div>{blog.url}</div>
-        <div>{blog.likes} <button onClick={() => handleLikeClick(blog.likes + 1, blog.id)}>like</button></div>
+        <div><span data-testid='likes'>{blog.likes}</span> <button onClick={() => handleLikeClick(blog.likes + 1, blog.id)}>like</button></div>
         <div>{blog.user.name}</div>
         {loggedUsername === blog.user.username &&
           <div><button className='delete_button' onClick={() => handleDelete(blog)}>Remove</button></div>}

@@ -59,5 +59,22 @@ describe('Blog app', function () {
       cy.contains('Wonders of cypress Jo Hopper');
       cy.contains('view');
     });
+
+    describe('Several blogs exist', function () {
+      beforeEach(function () {
+        cy.createBlog({ title: 'First blog', author: 'Tom', url: 'http://hs.fi' });
+        cy.createBlog({ title: 'Second blog', author: 'Jane', url: 'http://ytk.fi' });
+        cy.createBlog({ title: 'Third blog', author: 'John', url: 'http://tori.fi' });
+      });
+
+      it('A blog can be liked', function () {
+        cy.contains('Third blog John').contains('view').click();
+        cy.get('[data-testid=likes]').as('likes');
+        cy.get('@likes').should('contain', '0');
+
+        cy.contains('Third blog John').contains('like').click();
+        cy.get('@likes').should('contain', '1');
+      });
+    });
   });
 });
