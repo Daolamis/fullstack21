@@ -75,6 +75,13 @@ describe('Blog app', function () {
         cy.contains('Third blog John').contains('like').click();
         cy.get('@likes').should('contain', '1');
       });
+
+      it('A blog can deleted', function(){
+        cy.contains('Second blog').contains('view').click();
+        cy.contains('Second blog').contains('Remove').click();
+        cy.get('.info').should('contain', 'Blog Second blog is removed');
+        cy.get('.blog').should('not.contain','Second blog');
+      });
     });
   });
 });
