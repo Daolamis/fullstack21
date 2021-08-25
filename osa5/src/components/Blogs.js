@@ -33,7 +33,7 @@ const Blog = ({ blog, handleLikeClick, handleDelete, loggedUsername }) => {
   const buttonLabel = view ? 'hide' : 'view';
   return (
     <div className='blog'>
-      {blog.title} {blog.author} <button onClick={toggleView}>{buttonLabel}</button>
+      {blog.title} {blog.author} <button data-testid='view-button' onClick={toggleView}>{buttonLabel}</button>
       <div className='more_blog_data' style={{ display: view ? 'block' : 'none' }} >
         <div>{blog.url}</div>
         <div><span data-testid='likes'>{blog.likes}</span> <button onClick={() => handleLikeClick(blog.likes + 1, blog.id)}>like</button></div>

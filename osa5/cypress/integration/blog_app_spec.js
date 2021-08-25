@@ -76,11 +76,49 @@ describe('Blog app', function () {
         cy.get('@likes').should('contain', '1');
       });
 
-      it('A blog can deleted', function(){
+      it('A blog can deleted', function () {
         cy.contains('Second blog').contains('view').click();
         cy.contains('Second blog').contains('Remove').click();
         cy.get('.info').should('contain', 'Blog Second blog is removed');
-        cy.get('.blog').should('not.contain','Second blog');
+        cy.get('.blog').should('not.contain', 'Second blog');
+      });
+
+      it('Blogs are sorted by likes', function () {
+        cy.get('[data-testid=view-button]').click({ multiple: true });
+
+        cy.contains('First blog').contains('like').as('likeButton1');
+        cy.get('@likeButton1').parent().find('[data-testid=likes]').as('likes1');
+
+        cy.contains('Second blog').contains('like').as('likeButton2');
+        cy.get('@likeButton2').parent().find('[data-testid=likes]').as('likes2');
+
+        cy.contains('Third blog').contains('like').as('likeButton3');
+        cy.get('@likeButton3').parent().find('[data-testid=likes]').as('likes3');
+
+        // first blog get 1 like, second blog gets 2 likes and third blog gets 3 likes
+        cy.get('@likeButton2').click();
+        cy.get('@likes2').should('contain', '1');
+
+        cy.get('@likeButton1').click();
+        cy.get('@likes1').should('contain', '1');
+
+        cy.get('@likeButton3').click();
+        cy.get('@likes3').should('contain', '1');
+
+        cy.get('@likeButton2').click();
+        cy.get('@likes2').should('contain', '2');
+
+        cy.get('@likeButton3').click();
+        cy.get('@likes3').should('contain', '2');
+
+        cy.get('@likeButton3').click();
+        cy.get('@likes3').should('contain', '3');
+
+        cy.get('.blog').then(blogs => {
+          cy.wrap(blogs[0]).should('contain', 'Third blog');
+          cy.wrap(blogs[1]).should('contain', 'Second blog');
+          cy.wrap(blogs[2]).should('contain', 'First blog');
+        });
       });
     });
   });
