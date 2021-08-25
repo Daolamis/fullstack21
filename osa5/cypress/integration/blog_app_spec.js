@@ -68,11 +68,11 @@ describe('Blog app', function () {
       });
 
       it('A blog can be liked', function () {
-        cy.contains('Third blog John').contains('view').click();
-        cy.get('[data-testid=likes]').as('likes');
+        cy.contains('Third blog').contains('view').click();
+        cy.contains('Third blog').find('[data-testid=likes]').as('likes');
         cy.get('@likes').should('contain', '0');
 
-        cy.contains('Third blog John').contains('like').click();
+        cy.contains('Third blog').contains('like').click();
         cy.get('@likes').should('contain', '1');
       });
 
