@@ -1,3 +1,16 @@
+export const createAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data: { content }
+  }
+}
+export const addVote = (id) => {
+  return {
+    type: 'ADD_VOTE',
+    data: { id }
+  }
+}
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -23,11 +36,11 @@ const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
-    case 'VOTE':
+    case 'ADD_VOTE':
       const anecdote = state.find(a => a.id === action.data.id)
       const tmpState = state.map(a => a.id !== action.data.id ? a : { ...anecdote, votes: a.votes + 1 })
       return tmpState.sort((e1, e2) => e2.votes - e1.votes)
-    case 'ADD':
+    case 'NEW_ANECDOTE':
       return [...state, { content: action.data.content, id: getId, votes: 0 }]
     default:
       break;
