@@ -24,8 +24,10 @@ const reducer = (state = initialState, action) => {
   console.log('action', action)
   switch (action.type) {
     case 'VOTE':
-      const anecdote = state.find(a => a.id === action.data.id)  
-      return state.map(a => a.id !== action.data.id ? a : {...anecdote, votes: a.votes +1})  
+      const anecdote = state.find(a => a.id === action.data.id)
+      return state.map(a => a.id !== action.data.id ? a : { ...anecdote, votes: a.votes + 1 })
+    case 'ADD':
+      return [...state, { content: action.data.content, id: getId, votes: 0 }]
     default:
       break;
   }
