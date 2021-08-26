@@ -1,13 +1,12 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import { showNotification, hideNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(state => state.anecdotes)
   const filterTxt = useSelector(state => state.filter)
   const dispatch = useDispatch()
-  let notificationTimeout = useRef()
 
   const filtered = filterTxt
     ? anecdotes.filter(a => a.content.toUpperCase().indexOf(filterTxt.toUpperCase()) >= 0)
@@ -15,10 +14,7 @@ const AnecdoteList = () => {
 
   const vote = (anecdote) => {
     dispatch(addVote(anecdote));
-  
-    clearTimeout(notificationTimeout.current)
-    dispatch(showNotification(`you voted '${anecdote.content}'`))
-    notificationTimeout.current = setTimeout(() => dispatch(hideNotification()), 5000)
+    dispatch(setNotification(`you voted '${anecdote.content}'`, 5))
   }
 
   return filtered.map(anecdote =>

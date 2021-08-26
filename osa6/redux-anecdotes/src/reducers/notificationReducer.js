@@ -1,25 +1,25 @@
 const reducer = (state = null, action) => {
   switch (action.type) {
-    case 'SHOW':
+    case 'SET_NOTIFICATION':
       return action.notification
-    case 'HIDE':
+    case 'CLEAR_NOTIFICATION':
       return null;
     default:
       return state;
   }
 }
 
-export const showNotification = (notification) => {
-  return {
-    type: 'SHOW',
-    notification
+let notificationTimeout = null;
+export const setNotification = (notification, time) => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      notification
+    })
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => dispatch({ type: 'CLEAR_NOTIFICATION' }), time * 1000)
   }
 }
 
-export const hideNotification = () => {
-  return {
-    type: 'HIDE',
-  }
-}
 
 export default reducer;
