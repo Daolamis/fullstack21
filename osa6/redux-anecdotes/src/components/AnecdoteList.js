@@ -5,8 +5,13 @@ import { showNotification, hideNotification } from '../reducers/notificationRedu
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(state => state.anecdotes)
+  const filterTxt = useSelector(state => state.filter)
   const dispatch = useDispatch()
   let notificationTimeout = useRef()
+
+  const filtered = filterTxt
+    ? anecdotes.filter(a => a.content.toUpperCase().indexOf(filterTxt.toUpperCase()) >= 0)
+    : anecdotes
 
   const vote = (anecdote) => {
     clearTimeout(notificationTimeout.current)
@@ -15,7 +20,7 @@ const AnecdoteList = () => {
     notificationTimeout.current = setTimeout(() => dispatch(hideNotification()), 5000)
   }
 
-  return anecdotes.map(anecdote =>
+  return filtered.map(anecdote =>
     <div key={anecdote.id}>
       <div>
         {anecdote.content}
