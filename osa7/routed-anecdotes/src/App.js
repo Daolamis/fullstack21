@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -28,7 +29,7 @@ const AnecdoteList = ({ anecdotes }) => (
 
 const Anecdote = ({ anecdote }) => (
   <div>
-    <h3>{`${anecdote.title} by ${anecdote.author}`}</h3>
+    <h3>{`${anecdote.content} by ${anecdote.author}`}</h3>
     <div>{`has ${anecdote.votes} votes`}</div>
     <div>for more info see <a href={anecdote.info}>{anecdote.info}</a></div>
   </div>
@@ -57,17 +58,17 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
   }
@@ -78,15 +79,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author}/>
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...info}/>
         </div>
         <button>create</button>
       </form>
@@ -153,7 +154,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-      <Notification notification={notification}/>
+      <Notification notification={notification} />
       <Switch>
         <Route path='/about'>
           <About />
