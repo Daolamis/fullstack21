@@ -1,61 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Blogs from './components/Blogs';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
-import blogService from './services/blogs';
-import loginService from './services/login';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setNotification } from './reducers/notification';
 import { initBlogs, createBlog, likeBlog, removeBlog } from './reducers/blogs';
+import { initUser, login, logout } from './reducers/user';
 
 const App = () => {
   const blogs = useSelector(state => state.blogs);
-  const [user, setUser] = useState(null);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const toggleRef = useRef();
 
   useEffect(() => {
     dispatch(initBlogs());
+    dispatch(initUser());
   }, []);
 
-  useEffect(() => {
-    const userJson = window.localStorage.getItem('user');
-    if (userJson) {
-      const user = JSON.parse(userJson);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
-
-  const handleLogin = async (loginData) => {
-    try {
-      const user = await loginService.login(loginData);
-      window.localStorage.setItem('user', JSON.stringify(user));
-      setUser(user);
-      blogService.setToken(user.token);
-    } catch (e) {
-      dispatch(setNotification('wrong username or password', true));
-    }
+  const handleLogin = (loginData) => {
+    dispatch(login(loginData));
   };
 
   const handleLogout = () => {
-    setUser(null);
-    window.localStorage.removeItem('user');
+    dispatch(logout());
   };
 
-  const handleBlogSave = async (blog) => {
+  const handleBlogSave = (blog) => {
     dispatch(createBlog(blog));
     toggleRef.current.toggleVisibility();
   };
 
-  const handleLikeClick = async (blog) => {
+  const handleLikeClick = (blog) => {
     dispatch(likeBlog(blog));
   };
 
-  const handleDelete = async (blog) => {
+  const handleDelete = (blog) => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author} `)) {
       return;
     }
