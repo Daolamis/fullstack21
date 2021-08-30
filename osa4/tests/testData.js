@@ -1,7 +1,7 @@
 const testUser = {
   username: 'root',
   name: 'Jesper Kvik',
-  passwordHash: '$2b$10$b7fuCgeJL.fe1UGjtvGvDeozOCS.98jWz7U/eCpMfmNYHrY0lY7aq' // 'password'
+  password: 'password'
 };
 
 const testBlog = {
