@@ -17,11 +17,11 @@ const create = async (blog) => {
 
 };
 
-const addLikes = async (likes, blogId) => {
+const addLikes = async (blog) => {
   // we don't need to send whole blog when updating just likes.
-  // MongoDB updates onyy existing properties
-  const response = await axios.put(`${baseUrl}/${blogId}`, { likes });
-  return (await response).data;
+  // MongoDB updates only existing properties
+  const response = await axios.put(`${baseUrl}/${blog.id}`, { likes: blog.likes + 1 });
+  return response.data;
 };
 
 const remove = async (blogId) => {

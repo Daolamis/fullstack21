@@ -6,20 +6,19 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { setNotification } from './reducers/notification';
+import { initBlogs, createBlog, likeBlog, removeBlog } from './reducers/blogs';
 
 const App = () => {
-  const [blogs, _setBlogs] = useState([]);
+  const blogs = useSelector(state => state.blogs);
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const toggleRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    );
+    dispatch(initBlogs());
   }, []);
 
   useEffect(() => {
@@ -30,12 +29,6 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-
-  const setBlogs = blogs => {
-    const newArray = [...blogs];
-    newArray.sort((elem1, elem2) => elem2.likes - elem1.likes);
-    _setBlogs(newArray);
-  };
 
   const handleLogin = async (loginData) => {
     try {
@@ -54,43 +47,24 @@ const App = () => {
   };
 
   const handleBlogSave = async (blog) => {
-    try {
-      const newBlog = await blogService.create(blog);
-      setBlogs([...blogs, newBlog]);
-      dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`));
-      toggleRef.current.toggleVisibility();
-    } catch (e) {
-      dispatch(setNotification(e.response.data.error, true));
-    }
+    dispatch(createBlog(blog));
+    toggleRef.current.toggleVisibility();
   };
 
-  const handleLikeClick = async (likes, blogId) => {
-    try {
-      const updatedBlog = await blogService.addLikes(likes, blogId);
-      setBlogs(blogs.map(b => b.id !== blogId ? b : { ...b, likes: updatedBlog.likes }));
-      dispatch(setNotification(`Liked ${updatedBlog.title}, it has now ${updatedBlog.likes} likes`));
-    } catch (e) {
-      dispatch(setNotification(e.response.data.error, true));
-    }
+  const handleLikeClick = async (blog) => {
+    dispatch(likeBlog(blog));
   };
 
   const handleDelete = async (blog) => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author} `)) {
       return;
     }
-    try {
-      await blogService.remove(blog.id);
-      const filtered = blogs.filter(b => b.id !== blog.id);
-      setBlogs(filtered);
-      dispatch(setNotification(`Blog ${blog.title} is removed`));
-    } catch (e) {
-      dispatch(setNotification(e.response.data.error, true));
-    }
+    dispatch(removeBlog(blog));
   };
 
   return (
     <div>
-      <Notification/>
+      <Notification />
       {user === null ?
         <LoginForm handleLogin={handleLogin} />
         :
