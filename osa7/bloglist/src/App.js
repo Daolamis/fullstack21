@@ -6,11 +6,14 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import { useDispatch } from 'react-redux';
+
+import { setNotification } from './reducers/notification';
 
 const App = () => {
   const [blogs, _setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null); //{message:string, isError:boolean}
+  const dispatch = useDispatch();
   const toggleRef = useRef();
 
   useEffect(() => {
@@ -34,11 +37,6 @@ const App = () => {
     _setBlogs(newArray);
   };
 
-  const showNotification = (message, isError) => {
-    setNotification({ message, isError });
-    setTimeout(() => setNotification(null), 4000);
-  };
-
   const handleLogin = async (loginData) => {
     try {
       const user = await loginService.login(loginData);
@@ -46,7 +44,7 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     } catch (e) {
-      showNotification('wrong username or password', true);
+      dispatch(setNotification('wrong username or password', true));
     }
   };
 
@@ -59,10 +57,10 @@ const App = () => {
     try {
       const newBlog = await blogService.create(blog);
       setBlogs([...blogs, newBlog]);
-      showNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`);
+      dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`));
       toggleRef.current.toggleVisibility();
     } catch (e) {
-      showNotification(e.response.data.error, true);
+      dispatch(setNotification(e.response.data.error, true));
     }
   };
 
@@ -70,9 +68,9 @@ const App = () => {
     try {
       const updatedBlog = await blogService.addLikes(likes, blogId);
       setBlogs(blogs.map(b => b.id !== blogId ? b : { ...b, likes: updatedBlog.likes }));
-      showNotification(`Liked ${updatedBlog.title}, it has now ${updatedBlog.likes} likes`);
+      dispatch(setNotification(`Liked ${updatedBlog.title}, it has now ${updatedBlog.likes} likes`));
     } catch (e) {
-      showNotification(e.response.data.error, true);
+      dispatch(setNotification(e.response.data.error, true));
     }
   };
 
@@ -84,15 +82,15 @@ const App = () => {
       await blogService.remove(blog.id);
       const filtered = blogs.filter(b => b.id !== blog.id);
       setBlogs(filtered);
-      showNotification(`Blog ${blog.title} is removed`);
+      dispatch(setNotification(`Blog ${blog.title} is removed`));
     } catch (e) {
-      showNotification(e.response.data.error, true);
+      dispatch(setNotification(e.response.data.error, true));
     }
   };
 
   return (
     <div>
-      <Notification notification={notification} />
+      <Notification/>
       {user === null ?
         <LoginForm handleLogin={handleLogin} />
         :
