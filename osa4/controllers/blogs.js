@@ -24,9 +24,10 @@ router.post('', async (request, response) => {
 
 router.put('/:id', async (request, response) => {
   const { body, params: { id } } = request;
-  const result = await Blog.findByIdAndUpdate(id, body, { new: true });
-  if (result) {
-    response.json(result);
+  let updatedBlog = await Blog.findByIdAndUpdate(id, body, { new: true });
+  updatedBlog = await updatedBlog.populate('user', { username: 1, name: 1 }).execPopulate();
+  if (updatedBlog) {
+    response.json(updatedBlog);
   } else {
     response.status(404).end();
   }
