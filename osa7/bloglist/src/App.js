@@ -9,12 +9,12 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
 import User from './components/User';
-import { initBlogs, createBlog, likeBlog, removeBlog } from './reducers/blogs';
+import { initBlogs, createBlog } from './reducers/blogs';
 import { initUser, login, logout } from './reducers/user';
 import { initUsers } from './reducers/users';
+import Blog from './components/Blog';
 
 const App = () => {
-  const blogs = useSelector(state => state.blogs);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const toggleRef = useRef();
@@ -38,17 +38,6 @@ const App = () => {
     toggleRef.current.toggleVisibility();
   };
 
-  const handleLikeClick = (blog) => {
-    dispatch(likeBlog(blog));
-  };
-
-  const handleDelete = (blog) => {
-    if (!window.confirm(`Remove blog ${blog.title} by ${blog.author} `)) {
-      return;
-    }
-    dispatch(removeBlog(blog));
-  };
-
   return (
     <div>
       <Notification />
@@ -67,16 +56,16 @@ const App = () => {
         <Route path='/users'>
           <Users />
         </Route>
+        <Route path='/blogs/:id'>
+          <Blog />
+        </Route>
         <Route path='/'>
           {user &&
             <div>
               <Togglable visibleLabel='cancel' hideLabel='create new blog' ref={toggleRef}>
                 <BlogForm handleSave={handleBlogSave} />
               </Togglable>
-              <Blogs blogs={blogs}
-                handleLikeClick={handleLikeClick}
-                handleDelete={handleDelete}
-                loggedUsername={user.username} /> {/* my backend doesn't return userid, so username is used instead to delete blog*/}
+              <Blogs/>
             </div>
           }
         </Route>

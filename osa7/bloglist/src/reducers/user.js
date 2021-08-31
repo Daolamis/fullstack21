@@ -2,13 +2,13 @@ import { setNotification } from './notification';
 import blogService from '../services/blogs';
 import loginService from '../services/login';
 
-const reducer = (state = null, action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'USER_INIT':
     case 'LOGIN':
       return action.data;
     case 'LOGOUT':
-      return null;
+      return {};
     default:
       return state;
   }
