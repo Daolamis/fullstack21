@@ -11,10 +11,12 @@ const reducer = (state = [], action) => {
       return [...state, action.data];
     case 'REMOVE_BLOG':
       return state.filter(b => b.id !== action.data.id);
-    case 'UPDATE_BLOG': {
-      const _state = state.map(b => b.id !== action.data.id ? b : action.data);
+    case 'ADD_LIKE': {
+      const _state = state.map(b => b.id !== action.data.id ? b : { ...b, likes: action.data.likes });
       return _state.sort(blogLikeCompare);
     }
+    case 'ADD_COMMENT':
+      return state.map(b => b.id !== action.data.id ? b : { ...b, comments: action.data.comments });
     default:
       return state;
   }
@@ -65,10 +67,31 @@ export const likeBlog = (blog) => {
     try {
       const updatedBlog = await blogService.addLikes(blog);
       dispatch({
-        type: 'UPDATE_BLOG',
-        data: updatedBlog
+        type: 'ADD_LIKE',
+        data: {
+          id: updatedBlog.id,
+          likes: updatedBlog.likes
+        }
       });
       dispatch(setNotification(`Liked ${updatedBlog.title}, it has now ${updatedBlog.likes} likes`));
+    } catch (e) {
+      dispatch(setNotification(e.response.data.error, true));
+    }
+  };
+};
+
+export const addComment = (blogId, comment) => {
+  return async dispatch => {
+    try {
+      const updatedBlog = await blogService.addComment(blogId, comment);
+      dispatch({
+        type: 'ADD_COMMENT',
+        data: {
+          id: blogId,
+          comments: updatedBlog.comments
+        }
+      });
+      dispatch(setNotification(`Comment ${comment} is saved`));
     } catch (e) {
       dispatch(setNotification(e.response.data.error, true));
     }
