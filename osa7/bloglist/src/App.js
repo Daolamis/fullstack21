@@ -8,8 +8,10 @@ import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
+import User from './components/User';
 import { initBlogs, createBlog, likeBlog, removeBlog } from './reducers/blogs';
 import { initUser, login, logout } from './reducers/user';
+import { initUsers } from './reducers/users';
 
 const App = () => {
   const blogs = useSelector(state => state.blogs);
@@ -20,6 +22,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initBlogs());
     dispatch(initUser());
+    dispatch(initUsers());
   }, []);
 
   const handleLogin = (loginData) => {
@@ -58,8 +61,11 @@ const App = () => {
         </div>
       }
       <Switch>
+        <Route path='/users/:id'>
+          <User />
+        </Route>
         <Route path='/users'>
-          <Users></Users>
+          <Users />
         </Route>
         <Route path='/'>
           {user &&
