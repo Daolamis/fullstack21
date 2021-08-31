@@ -2,12 +2,12 @@ const router = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
-router.get('', async (request, response) => {
+router.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
   response.json(blogs);
 });
 
-router.post('', async (request, response) => {
+router.post('/', async (request, response) => {
   const { user } = request;
   if (!user) {
     return response.status(401).json({ error: 'token missing or invalid' });
@@ -20,6 +20,14 @@ router.post('', async (request, response) => {
   dbUser.blogs = [...dbUser.blogs, savedBlog._id];
   await dbUser.save();
   response.status(201).json(savedBlog);
+});
+
+router.post('/:id/comments', async (req, res) => {
+  let blog = await Blog.findById(req.params.id);
+  blog.comments.push(req.body.comment);
+  await blog.save();
+  blog = await blog.populate('user', { username: 1, name: 1 }).execPopulate();
+  res.json(blog);
 });
 
 router.put('/:id', async (request, response) => {

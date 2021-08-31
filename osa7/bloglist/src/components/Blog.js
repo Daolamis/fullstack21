@@ -30,13 +30,18 @@ const Blog = () => {
     <div>
       <h3>{blog.title} {blog.author}</h3>
 
-      <div>{blog.url}</div>
+      <div><a href={blog.url}>{blog.url}</a></div>
       <div>
         <span data-testid='likes'>{blog.likes}</span>
         <button onClick={() => handleLikeClick(blog)}>like</button></div>
       <div>{blog.user.name}</div>
       {user && user.username === blog.user.username &&
         <div><button className='delete_button' onClick={() => handleDelete(blog)}>Remove</button></div>}
+
+      <h4>Comments</h4>
+      <ul>
+        {blog.comments.map((comment, i) => <li key={i}>{comment}</li>)}
+      </ul>
     </div>
   );
 };
