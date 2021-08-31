@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import { addComment } from '../reducers/blogs';
 
+import { Button, Section } from './components.styled';
+
 const CommentForm = ({ blogId }) => {
   const [comment, setComment] = useState('');
   const dispatch = useDispatch();
@@ -14,12 +16,12 @@ const CommentForm = ({ blogId }) => {
   };
 
   return (
-    <div>
+    <Section>
       <form onSubmit={handleSubmit}>
         <input type='text' onChange={(e) => setComment(e.target.value)} value={comment} />
-        <button type='submit'>add comment</button>
+        <Button type='submit'>add comment</Button>
       </form>
-    </div>
+    </Section>
   );
 };
 export default CommentForm;

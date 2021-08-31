@@ -1,8 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
+import { Button, StyledNavigation } from './components.styled';
 import { logout } from '../reducers/user';
+
 
 const padding = {
   padding: 5
@@ -11,6 +13,7 @@ const padding = {
 const Navigation = () => {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   if (!user) {
     return null;
@@ -18,14 +21,15 @@ const Navigation = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    history.replace('/');
   };
 
   return (
-    <div style={{ backgroundColor: 'lightgray' }}>
+    <StyledNavigation>
       <Link style={padding} to='/'>blogs</Link>
       <Link style={padding} to='/users'>users</Link>
-      <span style={padding}>{`${user.name} logged in`} <button onClick={handleLogout}>logout</button></span>
-    </div>
+      <span style={padding}>{`${user.name} logged in`} <Button onClick={handleLogout}>logout</Button></span>
+    </StyledNavigation>
   );
 };
 

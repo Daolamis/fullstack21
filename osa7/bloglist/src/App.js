@@ -15,7 +15,6 @@ import { initBlogs, createBlog } from './reducers/blogs';
 import { initUser, login } from './reducers/user';
 import { initUsers } from './reducers/users';
 
-
 const App = () => {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -68,7 +67,7 @@ const App = () => {
           }
         </Route>
       </Switch>
-    </div >
+    </div>
   );
 };
 

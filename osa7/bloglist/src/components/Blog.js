@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { likeBlog, removeBlog } from '../reducers/blogs';
 import CommentForm from './CommentForm';
+import { Button, RemoveButton, Section } from './components.styled';
 
 const Blog = () => {
   const dispatch = useDispatch();
@@ -28,23 +29,23 @@ const Blog = () => {
   }
 
   return (
-    <div>
-      <h3>{blog.title} {blog.author}</h3>
+    <Section>
+      <h3>{blog.title} by {blog.author}</h3>
 
       <div><a href={blog.url}>{blog.url}</a></div>
       <div>
         <span data-testid='likes'>{blog.likes}</span>
-        <button onClick={() => handleLikeClick(blog)}>like</button></div>
+        <Button onClick={() => handleLikeClick(blog)}>like</Button></div>
       <div>{blog.user.name}</div>
       {user && user.username === blog.user.username &&
-        <div><button className='delete_button' onClick={() => handleDelete(blog)}>Remove</button></div>}
+        <div><RemoveButton className='delete_button' onClick={() => handleDelete(blog)}>Remove</RemoveButton></div>}
 
       <h4>Comments</h4>
       <CommentForm blogId={blog.id} />
       <ul>
         {blog.comments.map((comment, i) => <li key={i}>{comment}</li>)}
       </ul>
-    </div>
+    </Section>
   );
 };
 

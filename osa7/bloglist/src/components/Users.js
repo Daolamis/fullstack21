@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { StyledLink as Link, Section, Table } from './components.styled';
 
 const Users = () => {
   const users = useSelector(state => state.users);
 
   return (
-    <div>
+    <Section>
       <h3>Users</h3>
-      <table>
+      <Table>
         <tbody>
           <tr>
             <th></th>
@@ -16,9 +16,9 @@ const Users = () => {
           </tr>
           {users.map(u => <User key={u.id} user={u} />)}
         </tbody>
-      </table>
+      </Table>
 
-    </div>);
+    </Section>);
 
 };
 
