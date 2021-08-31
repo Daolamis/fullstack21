@@ -7,7 +7,7 @@ const Blog = () => {
   const dispatch = useDispatch();
   const match = useRouteMatch('/blogs/:id');
   const blog = useSelector(state => state.blogs.find(b => b.id === match.params.id));
-  const loggedUsername = useSelector(state => state.user.username);
+  const user = useSelector(state => state.user);
   const history = useHistory();
 
   const handleLikeClick = (blog) => {
@@ -35,7 +35,7 @@ const Blog = () => {
         <span data-testid='likes'>{blog.likes}</span>
         <button onClick={() => handleLikeClick(blog)}>like</button></div>
       <div>{blog.user.name}</div>
-      {loggedUsername === blog.user.username &&
+      {user && user.username === blog.user.username &&
         <div><button className='delete_button' onClick={() => handleDelete(blog)}>Remove</button></div>}
     </div>
   );

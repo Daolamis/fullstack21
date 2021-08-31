@@ -3,16 +3,18 @@ import { Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Blogs from './components/Blogs';
+import Blog from './components/Blog';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
+import Navigation from './components/Navigation';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
 import User from './components/User';
 import { initBlogs, createBlog } from './reducers/blogs';
-import { initUser, login, logout } from './reducers/user';
+import { initUser, login } from './reducers/user';
 import { initUsers } from './reducers/users';
-import Blog from './components/Blog';
+
 
 const App = () => {
   const user = useSelector(state => state.user);
@@ -29,10 +31,6 @@ const App = () => {
     dispatch(login(loginData));
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
   const handleBlogSave = (blog) => {
     dispatch(createBlog(blog));
     toggleRef.current.toggleVisibility();
@@ -41,12 +39,12 @@ const App = () => {
   return (
     <div>
       <Notification />
+      <Navigation/>
       {user === null ?
         <LoginForm handleLogin={handleLogin} />
         :
         <div>
           <h2>blogs</h2>
-          <p>{`${user.name} logged in`} <button onClick={handleLogout}>logout</button></p>
         </div>
       }
       <Switch>
