@@ -14,9 +14,7 @@ const ratingDescriptionTable = {
   3: "You're training hard, remember to rest"
 };
 
-type CalculatorFunction = (exercises: number[], target: number) => ExerciseResult;
-
-const exerciseCalculator: CalculatorFunction = (exercises, target) => {
+export const exerciseCalculator = (exercises:number[], target:number):ExerciseResult => {
   const periodLength = exercises.length;
   const trainingDays = exercises.reduce((sum, hour) => hour > 0 ? sum + 1 : sum, 0);
   const totalHours = exercises.reduce((sum, hour) => sum + hour, 0);
@@ -39,19 +37,24 @@ const exerciseCalculator: CalculatorFunction = (exercises, target) => {
   };
 };
 
-const parseArg = (arg:string):number => {
+const parseArg = (arg: string): number => {
   const ret = Number(arg);
-  if(isNaN(ret)){
+  if (isNaN(ret)) {
     throw new Error('Arguments must be a numbers');
   }
   return ret;
 };
 
-if(process.argv.length < 4){
-  throw new Error("You need to give at least two arguments");
-}
-// omit first two items
-const [,, ...theArgs] = process.argv; 
-const [target, ...dailyHours] = theArgs.map(parseArg);
+try {
+  if (process.argv.length < 4) {
+    throw new Error("You need to give at least two arguments");
+  }
+  // omit first two items
+  const [, , ...theArgs] = process.argv;
+  const [target, ...dailyHours] = theArgs.map(parseArg);
 
-console.log(exerciseCalculator(dailyHours, target));
+  console.log(exerciseCalculator(dailyHours, target));
+} catch (e) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log('Something happend, message ', e.message);
+}
