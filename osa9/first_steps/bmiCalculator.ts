@@ -1,5 +1,5 @@
 
-const bmiCalculator = (height: number, mass: number): string => {
+export const bmiCalculator = (height: number, mass: number): string => {
   const result = mass / Math.pow(height / 100, 2);
 
   if (result < 16) {
@@ -26,6 +26,7 @@ const bmiCalculator = (height: number, mass: number): string => {
   if (result > 40) {
     return "Obese (Class III)";
   }
+  return `error in calculation, given height: ${height}, weight: ${mass}`;
 };
 
 const parseArgs = (args: string[]): [number, number] => {
@@ -38,6 +39,10 @@ const parseArgs = (args: string[]): [number, number] => {
   return [Number(args[2]), Number(args[3])];
 }
 
-const [height, mass] = parseArgs(process.argv);
-console.log(height, mass);
-console.log(bmiCalculator(height, mass));
+try {
+  const [height, mass] = parseArgs(process.argv);
+  console.log(height, mass);
+  console.log(bmiCalculator(height, mass));
+} catch (e) {
+  console.log('Something happend, message', e.message);
+}
