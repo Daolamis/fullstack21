@@ -6,15 +6,15 @@ interface ExerciseResult {
   ratingDescription: string;
   target: number;
   average: number;
-};
+}
 
 const ratingDescriptionTable = {
   1: "Not that good, increase your training ",
   2: "Not too bad but could be better",
   3: "You're training hard, remember to rest"
-}
+};
 
-type CalculatorFunction = (exercises: number[], target: number) => ExerciseResult
+type CalculatorFunction = (exercises: number[], target: number) => ExerciseResult;
 
 const exerciseCalculator: CalculatorFunction = (exercises, target) => {
   const periodLength = exercises.length;
@@ -45,12 +45,13 @@ const parseArg = (arg:string):number => {
     throw new Error('Arguments must be a numbers');
   }
   return ret;
-}
+};
 
 if(process.argv.length < 4){
   throw new Error("You need to give at least two arguments");
 }
-const [tmp1, tmp2, ...theArgs] = process.argv; 
+// omit first two items
+const [,, ...theArgs] = process.argv; 
 const [target, ...dailyHours] = theArgs.map(parseArg);
 
 console.log(exerciseCalculator(dailyHours, target));

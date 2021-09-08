@@ -37,12 +37,13 @@ const parseArgs = (args: string[]): [number, number] => {
     throw new Error('All the arguments must be a numbers');
   }
   return [Number(args[2]), Number(args[3])];
-}
+};
 
 try {
   const [height, mass] = parseArgs(process.argv);
   console.log(height, mass);
   console.log(bmiCalculator(height, mass));
 } catch (e) {
-  console.log('Something happend, message', e.message);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log('Something happend, message',  e.message);
 }
