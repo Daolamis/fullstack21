@@ -9,7 +9,7 @@ interface ExerciseResult {
 };
 
 const ratingDescriptionTable = {
-  1: "Not that good, increase yout training ",
+  1: "Not that good, increase your training ",
   2: "Not too bad but could be better",
   3: "You're training hard, remember to rest"
 }
@@ -18,13 +18,13 @@ type CalculatorFunction = (exercises: number[], target: number) => ExerciseResul
 
 const exerciseCalculator: CalculatorFunction = (exercises, target) => {
   const periodLength = exercises.length;
-  const trainingDays = exercises.reduce((hour, sum) => hour > 0 ? sum + 1 : sum, 0);
-  const totalHours = exercises.reduce((hour, sum) => sum + hour, 0);
+  const trainingDays = exercises.reduce((sum, hour) => hour > 0 ? sum + 1 : sum, 0);
+  const totalHours = exercises.reduce((sum, hour) => sum + hour, 0);
   const average = totalHours / periodLength;
   const success = average >= target;
   // rating 1 : under 90% of target
-  // rating 2 : 90% - 109% of target
-  // rating 3 : over 120% of target
+  // rating 2 : 90% - 119% of target
+  // rating 3 : 120% and over the target
   const rating: 1 | 2 | 3 = average / target < 0.9 ? 1 : average / target < 1.2 ? 2 : 3;
   const ratingDescription = ratingDescriptionTable[rating];
 
@@ -39,4 +39,18 @@ const exerciseCalculator: CalculatorFunction = (exercises, target) => {
   };
 };
 
-console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1], 2));
+const parseArg = (arg:string):number => {
+  const ret = Number(arg);
+  if(isNaN(ret)){
+    throw new Error('Arguments must be a numbers');
+  }
+  return ret;
+}
+
+if(process.argv.length < 4){
+  throw new Error("You need to give at least two arguments");
+}
+const [tmp1, tmp2, ...theArgs] = process.argv; 
+const [target, ...dailyHours] = theArgs.map(parseArg);
+
+console.log(exerciseCalculator(dailyHours, target));

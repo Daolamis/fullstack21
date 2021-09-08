@@ -1,7 +1,6 @@
 
 const bmiCalculator = (height: number, mass: number): string => {
-  const heightInMetres = height / 100;
-  const result = mass / (heightInMetres * heightInMetres);
+  const result = mass / Math.pow(height / 100, 2);
 
   if (result < 16) {
     return "Underweight (Severe thinness) ";
@@ -29,4 +28,16 @@ const bmiCalculator = (height: number, mass: number): string => {
   }
 };
 
-console.log(bmiCalculator(180, 74));
+const parseArgs = (args: string[]): [number, number] => {
+  if (args.length != 4) {
+    throw new Error('You need to give 2 arguments (height and mass)');
+  }
+  if (isNaN(Number(args[2])) || isNaN(Number(args[3]))) {
+    throw new Error('All the arguments must be a numbers');
+  }
+  return [Number(args[2]), Number(args[3])];
+}
+
+const [height, mass] = parseArgs(process.argv);
+console.log(height, mass);
+console.log(bmiCalculator(height, mass));
