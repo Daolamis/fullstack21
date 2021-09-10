@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "Linda Monad",
+    "dateOfBirth": "2020-01-01",
+    "ssn": "230589-110a",
+    "gender": "female",
+    "occupation": "Programmer"
+}
