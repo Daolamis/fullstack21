@@ -1,5 +1,5 @@
-import { isString } from './typeGuards';
-import { NewPatientEntry } from './types';
+import { isGender, isString } from './typeGuards';
+import { Gender, NewPatientEntry } from './types';
 
 type PatientFields = {
   name: unknown;
@@ -19,7 +19,7 @@ export const toNewPatientEntry = ({
     name: parseStringParam(name, 'name'),
     dateOfBirth: parseDateParam(dateOfBirth, 'date of birth'),
     ssn: parseStringParam(ssn, 'ssn'),
-    gender: parseStringParam(gender, 'gender'),
+    gender: parseGender(gender),
     occupation: parseStringParam(occupation, 'occupation'),
   };
 };
@@ -37,4 +37,11 @@ const parseDateParam = (date: unknown, nameOfParam: string): string => {
     throw new Error(`Incorrect or missing ${nameOfParam}: ${date}`);
   }
   return parsedStr;
+};
+
+const parseGender = (gender: unknown): Gender => {
+  if (!gender || !parseStringParam(gender, 'gender') || !isGender(gender)) {
+    throw new Error(`Incorrect or missing gender: ${gender}`);
+  }
+  return gender;
 };
