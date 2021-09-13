@@ -6,8 +6,7 @@ import {
   PublicPatient,
 } from '../types';
 
-import rawPatients from '../../data/patients.json';
-const patients = rawPatients as Patient[];
+import patients from '../../data/patients';
 
 const filterSSN = (patient: Patient): NonSensetivePatient => {
   const { ssn, ...withoutSSN } = patient; // eslint-disable-line @typescript-eslint/no-unused-vars
