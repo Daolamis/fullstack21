@@ -1,7 +1,12 @@
 import { v1 as uuid } from 'uuid';
-import { NewPatientEntry, NonSensetivePatientEntry } from '../types';
-import patients from '../../data/patients.json';
+import {
+  NewPatientEntry,
+  NonSensetivePatientEntry,
+  PatientEntry,
+} from '../types';
+import rawPatients from '../../data/patients.json';
 
+const patients = rawPatients as PatientEntry[];
 const getEntries = (): NonSensetivePatientEntry[] =>
   patients.map(({ ssn, ...withoutSSN }) => withoutSSN); // eslint-disable-line @typescript-eslint/no-unused-vars
 
