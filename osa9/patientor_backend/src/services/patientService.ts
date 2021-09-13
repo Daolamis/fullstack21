@@ -1,23 +1,31 @@
 import { v1 as uuid } from 'uuid';
 import {
-  NewPatientEntry,
-  NonSensetivePatientEntry,
-  PatientEntry,
+  NewPatient,
+  NonSensetivePatient,
+  Patient,
+  PublicPatient,
 } from '../types';
+
 import rawPatients from '../../data/patients.json';
+const patients = rawPatients as Patient[];
 
-const patients = rawPatients as PatientEntry[];
-const getEntries = (): NonSensetivePatientEntry[] =>
-  patients.map(({ ssn, ...withoutSSN }) => withoutSSN); // eslint-disable-line @typescript-eslint/no-unused-vars
+const filterSSN = (patient: Patient): NonSensetivePatient => {
+  const { ssn, ...withoutSSN } = patient; // eslint-disable-line @typescript-eslint/no-unused-vars
+  return withoutSSN;
+};
+const getEntries = (): NonSensetivePatient[] => patients.map(filterSSN); // eslint-disable-line @typescript-eslint/no-unused-vars
 
-const addEntry = (entry: NewPatientEntry): NonSensetivePatientEntry => {
+const findById = (id: string): PublicPatient | undefined => {
+  return patients.find((p) => p.id === id);
+};
+
+const addEntry = (entry: NewPatient): NonSensetivePatient => {
   const newPatient = {
     id: uuid(),
     ...entry,
   };
   patients.push(newPatient);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { ssn, ...withoutSSN } = newPatient;
+  const withoutSSN = filterSSN(newPatient);
   return withoutSSN;
 };
-export default { addEntry, getEntries };
+export default { addEntry, getEntries, findById };

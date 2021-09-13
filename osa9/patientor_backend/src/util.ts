@@ -1,5 +1,5 @@
 import { isGender, isString } from './typeGuards';
-import { Gender, NewPatientEntry } from './types';
+import { Gender, NewPatient } from './types';
 
 type PatientFields = {
   name: unknown;
@@ -14,13 +14,14 @@ export const toNewPatientEntry = ({
   ssn,
   gender,
   occupation,
-}: PatientFields): NewPatientEntry => {
+}: PatientFields): NewPatient => {
   return {
     name: parseStringParam(name, 'name'),
     dateOfBirth: parseDateParam(dateOfBirth, 'date of birth'),
     ssn: parseStringParam(ssn, 'ssn'),
     gender: parseGender(gender),
     occupation: parseStringParam(occupation, 'occupation'),
+    entries: [],
   };
 };
 
