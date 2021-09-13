@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Container, Icon, Loader } from 'semantic-ui-react';
+import HealthEntry from '../components/HealthEntry';
 import { apiBaseUrl } from '../constants';
 import { setPatient, useStateValue } from '../state';
 import { Gender, Patient } from '../types';
@@ -45,6 +46,10 @@ const PatientPage = (): JSX.Element => {
       </h2>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
+      <h3>entries</h3>
+      {patient.entries.map((e) => (
+        <HealthEntry key={e.id} entry={e} />
+      ))}
     </Container>
   );
 };
