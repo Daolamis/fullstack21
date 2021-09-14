@@ -2,14 +2,14 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Container, Icon, Loader } from 'semantic-ui-react';
-import HealthEntry from '../components/HealthEntry';
+import EntryDetails from '../components/EntryDetails';
 import { apiBaseUrl } from '../constants';
 import { setPatient, useStateValue } from '../state';
 import { Gender, Patient } from '../types';
 
 const PatientPage = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient, diagnosis }, dispatch] = useStateValue();
+  const [{ patient }, dispatch] = useStateValue();
 
   useEffect(() => {
     if (patient && patient.id === id) {
@@ -48,7 +48,7 @@ const PatientPage = (): JSX.Element => {
       <div>occupation: {patient.occupation}</div>
       <h3>entries</h3>
       {patient.entries.map((e) => (
-        <HealthEntry key={e.id} entry={e} diagnosis={diagnosis} />
+        <EntryDetails key={e.id} entry={e} />
       ))}
     </Container>
   );
