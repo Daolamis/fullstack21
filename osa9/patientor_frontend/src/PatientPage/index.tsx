@@ -9,7 +9,7 @@ import { Gender, Patient } from '../types';
 
 const PatientPage = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, diagnosis }, dispatch] = useStateValue();
 
   useEffect(() => {
     if (patient && patient.id === id) {
@@ -48,7 +48,7 @@ const PatientPage = (): JSX.Element => {
       <div>occupation: {patient.occupation}</div>
       <h3>entries</h3>
       {patient.entries.map((e) => (
-        <HealthEntry key={e.id} entry={e} />
+        <HealthEntry key={e.id} entry={e} diagnosis={diagnosis} />
       ))}
     </Container>
   );

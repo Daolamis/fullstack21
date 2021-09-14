@@ -1,11 +1,12 @@
 import React from 'react';
-import { Entry } from '../types';
+import { Diagnosis, Entry } from '../types';
 
 interface EntryProps {
   entry: Entry;
+  diagnosis: { [code: string]: Diagnosis };
 }
 
-const HealthEntry = ({ entry }: EntryProps): JSX.Element => (
+const HealthEntry: React.FC<EntryProps> = ({ entry, diagnosis }) => (
   <div>
     <div>
       {entry.date} {entry.description}
@@ -13,7 +14,9 @@ const HealthEntry = ({ entry }: EntryProps): JSX.Element => (
     {entry.diagnosisCodes && (
       <ul>
         {entry.diagnosisCodes.map((code) => (
-          <li key={code}>{code}</li>
+          <li key={code}>
+            {code} {diagnosis[code] && diagnosis[code].name}
+          </li>
         ))}
       </ul>
     )}
