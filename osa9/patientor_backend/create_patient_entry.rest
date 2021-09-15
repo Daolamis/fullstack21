@@ -1,0 +1,20 @@
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "type": "HealthCheck",
+  "date":"2020-09-15",
+  "specialist":"Matti Näsä",
+  "description":"Jotakin on tapahtunut",
+  "healthCheckRating": 3,
+  "employerName": "SuPo",
+  "diagnosisCodes": ["J12.82", "L60.1"],
+  "sickLeave": {
+    "startDate": "2020-09-10",
+    "endDate": "2020-09-14"
+  },
+  "discharge": {
+    "date":"2020-04-12",
+    "criteria": "Krapula ohi"
+  }
+}

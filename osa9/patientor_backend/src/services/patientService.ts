@@ -1,18 +1,20 @@
 import { v1 as uuid } from 'uuid';
+import patients from '../../data/patients';
 import {
+  Entry,
+  NewEntry,
   NewPatient,
   NonSensetivePatient,
   Patient,
   PublicPatient,
 } from '../types';
 
-import patients from '../../data/patients';
-
 const filterSSN = (patient: Patient): NonSensetivePatient => {
   const { ssn, ...withoutSSN } = patient; // eslint-disable-line @typescript-eslint/no-unused-vars
   return withoutSSN;
 };
 const getAll = (): NonSensetivePatient[] => patients.map(filterSSN);
+
 const findById = (id: string): PublicPatient | undefined => {
   return patients.find((p) => p.id === id);
 };
@@ -27,4 +29,18 @@ const create = (patient: NewPatient): NonSensetivePatient => {
   return withoutSSN;
 };
 
-export default { create, getAll, findById };
+const createEntry = (patientId: string, entry: NewEntry): Entry => {
+  const patient = patients.find((p) => p.id === patientId);
+  if (!patient) {
+    throw new Error('Patient not found');
+  }
+  const newEntry = {
+    id: uuid(),
+    ...entry,
+  } as Entry;
+
+  patient.entries.push(newEntry);
+  return newEntry;
+};
+
+export default { create, createEntry, getAll, findById };

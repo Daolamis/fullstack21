@@ -15,6 +15,12 @@ export type Entry =
   | HospitalEntry
   | HealthCheckEntry;
 
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type NewEntry = UnionOmit<Entry, 'id'>;
 interface BaseEntry {
   id: string;
   date: string;
@@ -28,7 +34,7 @@ export enum HealthCheckRating {
   'HighRisk' = 2,
   'CriticalRisk' = 3,
 }
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: HealthCheckRating;
 }
