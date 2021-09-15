@@ -12,19 +12,19 @@ const filterSSN = (patient: Patient): NonSensetivePatient => {
   const { ssn, ...withoutSSN } = patient; // eslint-disable-line @typescript-eslint/no-unused-vars
   return withoutSSN;
 };
-const getEntries = (): NonSensetivePatient[] => patients.map(filterSSN); // eslint-disable-line @typescript-eslint/no-unused-vars
-
+const getAll = (): NonSensetivePatient[] => patients.map(filterSSN);
 const findById = (id: string): PublicPatient | undefined => {
   return patients.find((p) => p.id === id);
 };
 
-const addEntry = (entry: NewPatient): NonSensetivePatient => {
+const create = (patient: NewPatient): NonSensetivePatient => {
   const newPatient = {
     id: uuid(),
-    ...entry,
+    ...patient,
   };
   patients.push(newPatient);
   const withoutSSN = filterSSN(newPatient);
   return withoutSSN;
 };
-export default { addEntry, getEntries, findById };
+
+export default { create, getAll, findById };

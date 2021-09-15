@@ -5,7 +5,7 @@ import { toNewPatientEntry } from '../util';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.json(patientService.getEntries());
+  res.json(patientService.getAll());
 });
 
 router.get('/:id', (req, res) => {
@@ -20,7 +20,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   try {
     const patient = toNewPatientEntry(req.body);
-    const savedPatient = patientService.addEntry(patient);
+    const savedPatient = patientService.create(patient);
     res.json(savedPatient);
   } catch (e) {
     res.status(400).json({ error: (<Error>e).message });
