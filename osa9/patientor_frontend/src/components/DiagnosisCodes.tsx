@@ -4,7 +4,7 @@ import { Diagnosis } from '../types';
 
 const DiagnosisCodes: React.FC<{ diagnosisCodes?: Array<Diagnosis['code']> }> =
   ({ diagnosisCodes }) => {
-    const [{ diagnosis }] = useStateValue();
+    const [{ diagnoses }] = useStateValue();
     if (!diagnosisCodes || diagnosisCodes.length === 0) {
       return null;
     }
@@ -13,7 +13,7 @@ const DiagnosisCodes: React.FC<{ diagnosisCodes?: Array<Diagnosis['code']> }> =
       <ul>
         {diagnosisCodes.map((code) => (
           <li key={code}>
-            {code} {diagnosis[code] && diagnosis[code].name}
+            {code} {diagnoses[code] && diagnoses[code].name}
           </li>
         ))}
       </ul>

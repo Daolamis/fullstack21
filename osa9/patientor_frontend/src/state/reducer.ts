@@ -1,5 +1,5 @@
 import { State } from './state';
-import { Diagnosis, Patient } from '../types';
+import { Diagnosis, Entry, Patient } from '../types';
 
 export const setPatientList = (payload: Patient[]): SET_PATIENT_LIST_ACTION => {
   return {
@@ -31,11 +31,19 @@ export const setDiagnosisList = (
   };
 };
 
+export const addEntry = (payload: Entry): ADD_ENTRY_ACTION => {
+  return {
+    type: 'ADD_ENTRY',
+    payload,
+  };
+};
+
 export type Action =
   | SET_PATIENT_LIST_ACTION
   | SET_PATIENT_ACTION
   | ADD_PATIENT_ACTION
-  | SET_DIAGNOSIS_LIST_ACTION;
+  | SET_DIAGNOSIS_LIST_ACTION
+  | ADD_ENTRY_ACTION;
 
 type SET_PATIENT_LIST_ACTION = {
   type: 'SET_PATIENT_LIST';
@@ -57,6 +65,11 @@ type ADD_PATIENT_ACTION = {
   payload: Patient;
 };
 
+type ADD_ENTRY_ACTION = {
+  type: 'ADD_ENTRY';
+  payload: Entry;
+};
+
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'SET_PATIENT_LIST':
@@ -73,12 +86,12 @@ export const reducer = (state: State, action: Action): State => {
     case 'SET_DIAGNOSIS_LIST':
       return {
         ...state,
-        diagnosis: {
+        diagnoses: {
           ...action.payload.reduce(
             (memo, diagnosis) => ({ ...memo, [diagnosis.code]: diagnosis }),
             {}
           ),
-          ...state.diagnosis,
+          ...state.diagnoses,
         },
       };
     case 'ADD_PATIENT':
@@ -94,6 +107,20 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         patient: action.payload,
       };
+    case 'ADD_ENTRY':
+      // there must be a patient, because entry is added from Patient -page
+      const patient = { ...(state.patient as Patient) };
+      patient.entries.push(action.payload);
+
+      return {
+        ...state,
+        patient: patient,
+        patients: {
+          ...state.patients,
+          [patient.id]: patient,
+        },
+      };
+
     default:
       return state;
   }

@@ -111,13 +111,6 @@ const parseDateParam = (date: unknown, nameOfParam: string): string => {
   return parsedStr;
 };
 
-const parseNumberParam = (value: unknown, nameOfParam: string): number => {
-  if (!value || !isNumber(value)) {
-    throw new Error(`Incorrect or missing ${nameOfParam}: ${value}`);
-  }
-  return value;
-};
-
 const parseGender = (gender: unknown): Gender => {
   if (!gender || !parseStringParam(gender, 'gender') || !isGender(gender)) {
     throw new Error(`Incorrect or missing gender: ${gender}`);
@@ -126,12 +119,8 @@ const parseGender = (gender: unknown): Gender => {
 };
 
 const parseHealtCheckRating = (rating: unknown): HealthCheckRating => {
-  if (
-    !rating ||
-    !parseNumberParam(rating, 'HealthCheckRating') ||
-    !isHealthCheckRating(rating)
-  ) {
-    throw new Error(`Incorrect or missing gender: ${rating}`);
+  if (rating == null || !isNumber(rating) || !isHealthCheckRating(rating)) {
+    throw new Error(`Incorrect or missing health check rating: ${rating}`);
   }
   return rating;
 };
