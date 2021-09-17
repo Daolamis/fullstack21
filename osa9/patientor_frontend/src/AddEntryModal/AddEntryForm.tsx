@@ -1,13 +1,15 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { Button, Grid } from 'semantic-ui-react';
+import { Button, Divider, Grid } from 'semantic-ui-react';
 import {
   DiagnosisSelection,
+  HealthTypeSelection,
   NumberField,
   TextField,
 } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
 import { NewEntry } from '../types';
+import { convertValuesToNewEntry, validateForm } from './entryUtil';
 
 interface Props {
   onSubmit: (values: NewEntry) => void;
@@ -16,6 +18,7 @@ interface Props {
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
+
   return (
     <Formik
       initialValues={{
@@ -24,29 +27,31 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         specialist: '',
         description: '',
         diagnosisCodes: [],
+        //HealthCheck
         healthCheckRating: 0,
+        //OccupationalHealthcare
+        employerName: '',
+        sickleaveStartDate: '',
+        sickleaveEndDate: '',
+        //Hospital
+        dischargeDate: '',
+        dischargeCriteria: '',
       }}
       validate={(values) => {
-        const requiredError = 'Field is required';
-        const errors: { [field: string]: string } = {};
-        if (!values.date) {
-          errors.date = requiredError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        return errors;
+        return validateForm(values);
       }}
       onSubmit={(val) => {
-        onSubmit(val as NewEntry);
+        const values = convertValuesToNewEntry(val);
+        onSubmit(values);
       }}
     >
-      {({ setFieldValue, setFieldTouched }) => {
+      {({ values, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
+            <HealthTypeSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            />
             <Field
               label="Date"
               placeholder="Date"
@@ -70,15 +75,56 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
+            <Divider />
+            {values.type === 'HealthCheck' && (
+              <Field
+                label="HealthCheckRating"
+                placeholder="HealthCheckRating"
+                name="healthCheckRating"
+                component={NumberField}
+                min={0}
+                max={3}
+              />
+            )}
+            {values.type === 'OccupationalHealthcare' && (
+              <>
+                <Field
+                  label="Employee"
+                  placeholder="Employee"
+                  name="employerName"
+                  component={TextField}
+                />
+                <Field
+                  label="Sick leave starting"
+                  placeholder="Sick leave starting"
+                  name="sickleaveStartDate"
+                  component={TextField}
+                />
+                <Field
+                  label="Sick leave ending"
+                  placeholder="Sick leave ending"
+                  name="sickleaveEndDate"
+                  component={TextField}
+                />
+              </>
+            )}
+            {values.type === 'Hospital' && (
+              <>
+                <Field
+                  label="Discharge date"
+                  placeholder="Discharge date"
+                  name="dischargeDate"
+                  component={TextField}
+                />
+                <Field
+                  label="Discharge criteria"
+                  placeholder="Discharge criteria"
+                  name="dischargeCriteria"
+                  component={TextField}
+                />
+              </>
+            )}
 
-            <Field
-              label="HealthCheckRating"
-              placeholder="HealthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
-            />
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
